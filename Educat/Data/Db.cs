@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Text;
 
-namespace EducAnalys.Data
+namespace Educat.Data
 {
     public static class Db
     {
@@ -11,7 +11,7 @@ namespace EducAnalys.Data
             @"Server=localhost\SQLEXPRESS;
             Database=Educ;
             Trusted_connection=true;
-            SqlServerCertificate=true;";
+            TrustServerCertificate=true;";
 
         public static SqlConnection GetConnection()
         {

@@ -82,6 +82,7 @@
       <DependentUpon>Auth.xaml</DependentUpon>
     </Compile>
     <Compile Include="Data\Db.cs" />
+    <Compile Include="Data\DbHelper.cs" />
     <Compile Include="GoodPanel.xaml.cs">
       <DependentUpon>GoodPanel.xaml</DependentUpon>
     </Compile>
@@ -91,6 +92,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\ComboBoxItems.cs" />
+    <Compile Include="Models\Good.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -118,16 +121,36 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Pictures\1.jpg" />
-    <Resource Include="Pictures\10.jpg" />
-    <Resource Include="Pictures\2.jpg" />
-    <Resource Include="Pictures\3.jpg" />
-    <Resource Include="Pictures\4.jpg" />
-    <Resource Include="Pictures\5.jpg" />
-    <Resource Include="Pictures\6.jpg" />
-    <Resource Include="Pictures\7.jpg" />
-    <Resource Include="Pictures\8.jpg" />
-    <Resource Include="Pictures\9.jpg" />
+    <AdditionalFiles Include="Pictures\1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AdditionalFiles>
+    <AdditionalFiles Include="Pictures\10.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AdditionalFiles>
+    <AdditionalFiles Include="Pictures\2.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AdditionalFiles>
+    <AdditionalFiles Include="Pictures\3.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AdditionalFiles>
+    <AdditionalFiles Include="Pictures\4.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AdditionalFiles>
+    <AdditionalFiles Include="Pictures\5.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AdditionalFiles>
+    <AdditionalFiles Include="Pictures\6.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AdditionalFiles>
+    <AdditionalFiles Include="Pictures\7.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AdditionalFiles>
+    <AdditionalFiles Include="Pictures\8.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AdditionalFiles>
+    <AdditionalFiles Include="Pictures\9.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AdditionalFiles>
     <Resource Include="Resouces\Icon.ico" />
     <Resource Include="Resouces\picture.png" />
   </ItemGroup>

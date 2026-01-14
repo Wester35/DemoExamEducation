@@ -5,8 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Educat"
         mc:Ignorable="d" Icon="/Resouces/Icon.ico" FontFamily="Times New Roman" FontSize="20px"
-        Title="Главное окно" Height="450" Width="800">
+        Title="Главное окно" Height="650" Width="1150" Background="{DynamicResource Main}">
     <Grid>
-        
+        <Button x:Name="BackButton" Content="Назад" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="30" Width="90" Click="BackButton_Click" Background="{DynamicResource Accent}"/>
+        <Button x:Name="AddButton" Content="Добавить" HorizontalAlignment="Left" Margin="10,60,0,0" VerticalAlignment="Top" Height="30" Width="90" Click="AddButton_Click" Background="{DynamicResource Accent}"/>
+        <ScrollViewer Margin="105,60,0,0">
+            <StackPanel x:Name="ItemsPanel"/>
+        </ScrollViewer>
+        <Label x:Name="FullNameLabel" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="SearchBox" HorizontalAlignment="Left" Margin="105,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="183"/>
+        <ComboBox x:Name="SortBox" HorizontalAlignment="Left" Margin="322,10,0,0" VerticalAlignment="Top" Width="161">
+            <ComboBoxItem IsSelected="True" Content="Без сортировки"/> 
+            <ComboBoxItem Content="По возрастанию"/>
+            <ComboBoxItem Content="По убыванию"/>
+        </ComboBox>
+        <ComboBox x:Name="FilterBox" HorizontalAlignment="Left" Margin="521,10,0,0" VerticalAlignment="Top" Width="150"/>
+
     </Grid>
 </Window>

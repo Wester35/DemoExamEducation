@@ -1,26 +1,69 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Educat.Models;
+using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
-namespace EducAnalys
+namespace Educat
 {
     /// <summary>
     /// Interaction logic for GoodPanel.xaml
     /// </summary>
     public partial class GoodPanel : UserControl
     {
-        public GoodPanel()
+        private Good CurrentGood;
+
+        public GoodPanel(Good good, bool isAdmin)
         {
             InitializeComponent();
+            CurrentGood = good;
+            LoadItem();
+        }
+
+        private void LoadItem()
+        {
+            CategoryLabel.Content = $"{CurrentGood.Category} | {CurrentGood.Label}";
+            Description.Content = "Описание: " + CurrentGood.Description;
+            Count.Content = "Количество на складе: " + CurrentGood.Count.ToString();
+            if (CurrentGood.Count == 0) 
+            {
+                Count.Background = Brushes.LightBlue;            
+            }
+            Discount.Content = CurrentGood.Discount;
+            if (CurrentGood.Discount < 0 || CurrentGood.Discount > 100) 
+            {
+                Discount.Content = "0";
+            }
+            if (CurrentGood.Discount > 0) 
+            {
+                NewPrice.Text = (CurrentGood.Price - CurrentGood.Price * ((double)CurrentGood.Discount / 100)).ToString("F2");
+                OldPrice.TextDecorations = TextDecorations.Strikethrough;
+                OldPrice.Foreground = Brushes.Red;
+            }
+            OldPrice.Text = CurrentGood.Price.ToString("F2");
+            if (CurrentGood.Discount > 15 && CurrentGood.Discount <= 100)
+            {
+                DiscountBorder.Background = (Brush)Application.Current.Resources["Discount"];
+            }
+            UnitOfMeasure.Content = "Единица измерения: " + CurrentGood.UnitOfMeasure;
+            Supplier.Content = "Поставщик: " + CurrentGood.Supplier;
+            Fabric.Content = "Производитель: " + CurrentGood.Fabric;
+            if (CurrentGood.Photo != null) 
+            {
+                string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Pictures", CurrentGood.Photo);
+
+                if (File.Exists(path)) 
+                {
+                    BitmapImage bitmap = new BitmapImage();
+                    bitmap.BeginInit();
+                    bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                    bitmap.UriSource = new Uri(path);
+                    bitmap.EndInit();
+                    PhotoBox.Source = bitmap;
+                }
+            }
         }
     }
 }
