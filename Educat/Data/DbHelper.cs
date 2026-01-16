@@ -1,4 +1,5 @@
 ﻿using Educat.Models;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
@@ -67,6 +68,195 @@ namespace Educat.Data
                     MessageBoxButton.OK, MessageBoxImage.Warning);
             }
             return null;
+        }
+
+        public static bool AddGoods(Good good)
+        {
+            try
+            {
+                using (SqlConnection conn = Db.GetConnection())
+                {
+                    string sql = @"
+                    INSERT INTO Goods (IdGood, Article, IdLabel, 
+                    UnitOfMeasure, Price, IdSupplier, 
+                    IdFabric, IdCategory, Discount, 
+                    Count, Description, Photo)
+                    VALUES (@IdGood, @Article, @IdLabel, 
+                    @UnitOfMeasure, @Price, @IdSupplier, 
+                    @IdFabric, @IdCategory, @Discount, 
+                    @Count, @Description, @Photo);";
+
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@IdGood", good.Id);
+                    cmd.Parameters.AddWithValue("@Article", good.Article);
+                    cmd.Parameters.AddWithValue("@IdLabel", good.IdLabel);
+                    cmd.Parameters.AddWithValue("@UnitOfMeasure", good.UnitOfMeasure);
+                    cmd.Parameters.AddWithValue("@Price", good.Price);
+                    cmd.Parameters.AddWithValue("@IdSupplier", good.IdSupplier);
+                    cmd.Parameters.AddWithValue("@IdFabric", good.IdFabric);
+                    cmd.Parameters.AddWithValue("@IdCategory", good.IdCategory);
+                    cmd.Parameters.AddWithValue("@Discount", good.Discount);
+                    cmd.Parameters.AddWithValue("@Count", good.Count);
+                    cmd.Parameters.AddWithValue("@Description", good.Description);
+
+                    if (good.Photo == null)
+                    {
+                        cmd.Parameters.AddWithValue("@Photo", DBNull.Value);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("@Photo", good.Photo);
+                    }
+
+                    if (cmd.ExecuteNonQuery() > 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка добавления товара (NewID: {good.Id})! {ex}", "Ошибка работы с БД",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            return false;
+        }
+
+        public static bool EditGoods(Good good)
+        {
+            try
+            {
+                using (SqlConnection conn = Db.GetConnection())
+                {
+                    string sql = @"
+                    UPDATE Goods SET Article = @Article, IdLabel = @IdLabel, 
+                    UnitOfMeasure = @UnitOfMeasure, Price = @Price, IdSupplier = @IdSupplier, 
+                    IdFabric = @IdFabric, IdCategory = @IdCategory, Discount = @Discount, 
+                    Count = @Count, Description = @Description, Photo = @Photo WHERE IdGood = @IdGood;";
+
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@IdGood", good.Id);
+                    cmd.Parameters.AddWithValue("@Article", good.Article);
+                    cmd.Parameters.AddWithValue("@IdLabel", good.IdLabel);
+                    cmd.Parameters.AddWithValue("@UnitOfMeasure", good.UnitOfMeasure);
+                    cmd.Parameters.AddWithValue("@Price", good.Price);
+                    cmd.Parameters.AddWithValue("@IdSupplier", good.IdSupplier);
+                    cmd.Parameters.AddWithValue("@IdFabric", good.IdFabric);
+                    cmd.Parameters.AddWithValue("@IdCategory", good.IdCategory);
+                    cmd.Parameters.AddWithValue("@Discount", good.Discount);
+                    cmd.Parameters.AddWithValue("@Count", good.Count);
+                    cmd.Parameters.AddWithValue("@Description", good.Description);
+
+                    if (good.Photo == null)
+                    {
+                        cmd.Parameters.AddWithValue("@Photo", DBNull.Value);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("@Photo", good.Photo);
+                    }
+
+                    if (cmd.ExecuteNonQuery() > 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка редактирования товара (ID: {good.Id})! {ex}", "Ошибка работы с БД",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            return false;
+        }
+
+        private static bool CheckGoodInOrders(int id)
+        {
+            try
+            {
+                using (SqlConnection conn = Db.GetConnection())
+                {
+                    string sql = @"
+                    SELECT COUNT(*) FROM OrderDetails WHERE IdGood = @IdGood;";
+
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@IdGood", id);
+                    if (cmd.ExecuteNonQuery() > 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+            catch
+            {
+                MessageBox.Show($"Ошибка проверки товара (ID: {id})!", "Ошибка работы с БД",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            return false;
+        }
+        
+        public static bool DeleteGood(int id)
+        {
+            try
+            {
+                using (SqlConnection conn = Db.GetConnection())
+                {
+                    if (CheckGoodInOrders(id))
+                    {
+                        MessageBox.Show($"Данный товар присутствует в заказе!", "Ошибка удаления товара",
+                            MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return false;
+                    }
+
+                    string sql = @"
+                    Delete Goods where IdGood = @IdGood;";
+
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@IdGood", id);
+                    if (cmd.ExecuteNonQuery() > 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+            catch
+            {
+                MessageBox.Show($"Ошибка удаления товара (ID: {id})!", "Ошибка работы с БД",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            return false;
+        }
+
+        public static int GetMaxId()
+        {
+            try
+            {
+                using (SqlConnection conn = Db.GetConnection())
+                {
+                    string sql = @"
+                    SELECT MAX(IdGood) FROM Goods;";
+
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(sql, conn);
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return reader.GetInt32(0);
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Ошибка получения максимального ID!", "Ошибка работы с БД",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            return -1;
         }
 
         public static User Authorize(string username, string password)

@@ -1,4 +1,5 @@
-﻿using Educat.Models;
+﻿using Educat.Data;
+using Educat.Models;
 using System;
 using System.IO;
 using System.Windows;
@@ -14,12 +15,16 @@ namespace Educat
     public partial class GoodPanel : UserControl
     {
         private Good CurrentGood;
-
+        public event Action Edited;
         public GoodPanel(Good good, bool isAdmin)
         {
             InitializeComponent();
             CurrentGood = good;
             LoadItem();
+            if (isAdmin)
+            {
+                MouseDoubleClick += UserControl_MouseDoubleClick;
+            }
         }
 
         private void LoadItem()
@@ -64,6 +69,19 @@ namespace Educat
                     PhotoBox.Source = bitmap;
                 }
             }
+        }
+
+        private void UserControl_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            AddEditWindow wnd = new AddEditWindow(true, CurrentGood)
+            {
+                Owner = Application.Current.MainWindow
+            };
+            wnd.Closed += (s, args) =>
+            {
+                Edited?.Invoke();
+            };
+            wnd.ShowDialog();
         }
     }
 }

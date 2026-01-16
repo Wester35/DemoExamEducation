@@ -5,8 +5,58 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Educat"
         mc:Ignorable="d" Icon="/Resouces/Icon.ico" FontFamily="Times New Roman" FontSize="20px"
-        Title="AddEditWindow" Height="450" Width="800">
+        Title="Добавление товара" Height="450" Width="800">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Label x:Name="IdLabel" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,0,0,0"/>
+
+        <Label Grid.Row="0" Grid.Column="1" Content="Артикль" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,0,0,0"/>
+        <TextBox x:Name="ArticleBox" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Margin="10,33,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="180" PreviewTextInput="ArticleBox_PreviewTextInput"/>
+
+        <Label Grid.Row="0" Grid.Column="2" Content="Наименование" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,0,0,0"/>
+        <ComboBox x:Name="LabelBox" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Left" Margin="10,33,0,0" VerticalAlignment="Top" Width="180"/>
+
+        <Label Grid.Row="0" Grid.Column="3" Content="Единица имерения" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,0,0,0"/>
+        <TextBox x:Name="UnitOfMeasureBox" Grid.Row="0" Grid.Column="3" HorizontalAlignment="Left" Margin="10,33,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="180"/>
+
+        <Label Grid.Row="1" Grid.Column="0" Content="Цена" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,0,0,0"/>
+        <TextBox x:Name="PriceBox" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Margin="10,33,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="180" PreviewTextInput="PriceBox_PreviewTextInput"/>
+
+        <Label Grid.Row="1" Grid.Column="1" Content="Поставщик" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,0,0,0"/>
+        <ComboBox x:Name="SupplierBox" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Margin="10,33,0,0" VerticalAlignment="Top" Width="180"/>
+
+        <Label Grid.Row="1" Grid.Column="2" Content="Производитель" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,0,0,0"/>
+        <ComboBox x:Name="FabricBox" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Left" Margin="10,33,0,0" VerticalAlignment="Top" Width="180"/>
+
+        <Label Grid.Row="1" Grid.Column="3" Content="Категория товара" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,0,0,0"/>
+        <ComboBox x:Name="CategoryBox" Grid.Row="1" Grid.Column="3" HorizontalAlignment="Left" Margin="10,33,0,0" VerticalAlignment="Top" Width="180"/>
+
+        <Label Grid.Row="2" Grid.Column="0" Content="Скидка" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,0,0,0"/>
+        <TextBox x:Name="DiscountBox" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" Margin="10,33,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="180" PreviewTextInput="IntBoxes_PreviewTextInput"/>
+
+        <Label Grid.Row="2" Grid.Column="2" Content="Кол-во на складе" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,0,0,0"/>
+        <TextBox x:Name="CountBox" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Left" Margin="10,33,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="180" PreviewTextInput="IntBoxes_PreviewTextInput"/>
+
+
+        <Label Grid.Row="1" Grid.Column="1" Content="Описание" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,67,0,0" Height="29" Grid.RowSpan="2"/>
+        <TextBox x:Name="DescriptionBox" FontSize="14px" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" Margin="0,28,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="180" Height="34"/>
+        <Image x:Name="ImageBox" HorizontalAlignment="Center" Height="130" Margin="0,72,0,0" Grid.RowSpan="2" Grid.Row="2" VerticalAlignment="Center" Width="174" Source="/Resouces/picture.png"/>
+        <Button x:Name="ChooseButton" Content="Выбрать фото" HorizontalAlignment="Center" Margin="0,0,0,0" Grid.Row="4" VerticalAlignment="Center" Width="174" Background="{DynamicResource Accent}" Click="ChooseButton_Click"/>
+        <Button x:Name="DeleteButton" Content="Удалить" HorizontalAlignment="Center" Margin="0,0,0,0" Grid.Row="4" Grid.Column="2" VerticalAlignment="Center" Width="174" Background="{DynamicResource Accent}" Click="DeleteButton_Click"/>
+        <Button x:Name="AddEditButton" Content="Добавить" HorizontalAlignment="Center" Margin="0,0,0,0" Grid.Row="4" Grid.Column="3" VerticalAlignment="Center" Width="174" Background="{DynamicResource Accent}" Click="AddEditButton_Click"/>
+
+
     </Grid>
 </Window>

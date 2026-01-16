@@ -22,16 +22,18 @@ namespace Educat
             InitializeComponent();
             CurrentUser = user;
             InitRoleComponents();
-            Goods = DbHelper.GetGoods();
             LoadItems();
         }
 
         private void LoadItems()
         {
+            Goods = DbHelper.GetGoods();
+
             ItemsPanel.Children.Clear();
             foreach (Good good in Goods)
             {
                 GoodPanel item = new GoodPanel(good, IsAdmin);
+                item.Edited += LoadItems;
                 ItemsPanel.Children.Add(item);
             } 
         }
@@ -53,7 +55,15 @@ namespace Educat
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            AddEditWindow wnd = new AddEditWindow();
+            AddEditWindow wnd = new AddEditWindow(false, null)
+            {
+                Owner = Application.Current.MainWindow
+            };
+            wnd.Closed += (s, args) =>
+            {
+                LoadItems();
+            };
+            wnd.ShowDialog();
         }
 
         private void InitRoleComponents()
