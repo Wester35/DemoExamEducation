@@ -2,12 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Data.SqlTypes;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Documents;
 
 
 namespace Educat.Data
@@ -115,9 +110,9 @@ namespace Educat.Data
                     }
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                MessageBox.Show($"Ошибка добавления товара (NewID: {good.Id})! {ex}", "Ошибка работы с БД",
+                MessageBox.Show($"Ошибка добавления товара (NewID: {good.Id})!", "Ошибка работы с БД",
                     MessageBoxButton.OK, MessageBoxImage.Warning);
             }
             return false;
@@ -164,9 +159,9 @@ namespace Educat.Data
                     }
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                MessageBox.Show($"Ошибка редактирования товара (ID: {good.Id})! {ex}", "Ошибка работы с БД",
+                MessageBox.Show($"Ошибка редактирования товара (ID: {good.Id})!", "Ошибка работы с БД",
                     MessageBoxButton.OK, MessageBoxImage.Warning);
             }
             return false;
@@ -184,9 +179,15 @@ namespace Educat.Data
                     conn.Open();
                     SqlCommand cmd = new SqlCommand(sql, conn);
                     cmd.Parameters.AddWithValue("@IdGood", id);
-                    if (cmd.ExecuteNonQuery() > 0)
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        return true;
+                        if (reader.Read())
+                        {
+                            if (reader.GetInt32(0) > 0)
+                            {
+                                return true;
+                            }
+                        }
                     }
                 }
             }
@@ -200,35 +201,37 @@ namespace Educat.Data
         
         public static bool DeleteGood(int id)
         {
-            try
+            if (CheckGoodInOrders(id))
             {
-                using (SqlConnection conn = Db.GetConnection())
+                MessageBox.Show($"Данный товар присутствует в заказе!", "Ошибка удаления товара",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+            else
+            {
+                try
                 {
-                    if (CheckGoodInOrders(id))
+                    using (SqlConnection conn = Db.GetConnection())
                     {
-                        MessageBox.Show($"Данный товар присутствует в заказе!", "Ошибка удаления товара",
-                            MessageBoxButton.OK, MessageBoxImage.Warning);
-                        return false;
-                    }
+                        string sql = @"
+                        Delete Goods where IdGood = @IdGood;";
 
-                    string sql = @"
-                    Delete Goods where IdGood = @IdGood;";
-
-                    conn.Open();
-                    SqlCommand cmd = new SqlCommand(sql, conn);
-                    cmd.Parameters.AddWithValue("@IdGood", id);
-                    if (cmd.ExecuteNonQuery() > 0)
-                    {
-                        return true;
+                        conn.Open();
+                        SqlCommand cmd = new SqlCommand(sql, conn);
+                        cmd.Parameters.AddWithValue("@IdGood", id);
+                        if (cmd.ExecuteNonQuery() > 0)
+                        {
+                            return true;
+                        }
                     }
                 }
+                catch
+                {
+                    MessageBox.Show($"Ошибка удаления товара (ID: {id})!", "Ошибка работы с БД",
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+                return false;
             }
-            catch
-            {
-                MessageBox.Show($"Ошибка удаления товара (ID: {id})!", "Ошибка работы с БД",
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
-            return false;
         }
 
         public static int GetMaxId()

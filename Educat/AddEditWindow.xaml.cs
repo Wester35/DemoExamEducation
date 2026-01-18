@@ -128,7 +128,7 @@ namespace Educat
             image.CacheOption = BitmapCacheOption.OnLoad;
             image.EndInit();
 
-            if (image.PixelHeight > 200 && image.PixelWidth > 300)
+            if (image.PixelHeight > 200 || image.PixelWidth > 300)
             {
                 MessageBox.Show("Размер изображения не может превышать 300х200 пикселей!", 
                     "Ошибка загрузки изображения", MessageBoxButton.OK, MessageBoxImage.Warning);

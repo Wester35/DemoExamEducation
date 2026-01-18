@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Educat.Models
+﻿namespace Educat.Models
 {
     public class User
     {

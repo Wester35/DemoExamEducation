@@ -1,9 +1,8 @@
 ﻿using Educat.Data;
 using Educat.Models;
-using System;
+using System.Windows.Controls;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows;
 
 namespace Educat
@@ -22,15 +21,53 @@ namespace Educat
             InitializeComponent();
             CurrentUser = user;
             InitRoleComponents();
-            LoadItems();
+            Loaded += (_, __) => LoadItems();
         }
 
         private void LoadItems()
         {
             Goods = DbHelper.GetGoods();
+            RefreshItems();
+        }
 
+        private void RefreshItems()
+        {
             ItemsPanel.Children.Clear();
-            foreach (Good good in Goods)
+
+            if (Goods == null) 
+                return;
+
+            IEnumerable<Good> goods = Goods;
+
+            if (!string.IsNullOrWhiteSpace(SearchBox.Text)) 
+            { 
+                string text = SearchBox.Text.ToLower();
+                goods = goods.Where(g => 
+                (g.Article ?? "").ToLower().Contains(text) ||
+                (g.Category ?? "").ToLower().Contains(text) ||
+                (g.Fabric ?? "").ToLower().Contains(text) ||
+                (g.Description ?? "").ToLower().Contains(text) ||
+                (g.Label ?? "").ToLower().Contains(text) ||
+                (g.Supplier ?? "").ToLower().Contains(text));
+            }
+
+            if (FilterBox.SelectedIndex > 0 && FilterBox.SelectedValue != null) 
+            {
+                int supplierId = (int)FilterBox.SelectedIndex;
+                goods = goods.Where(g => g.IdSupplier == supplierId);
+            }
+
+            switch(SortBox.SelectedIndex) 
+            {
+                case 1:
+                    goods = goods.OrderBy(g => g.Price);
+                    break;
+                case 2:
+                    goods = goods.OrderByDescending(g => g.Price);
+                    break;
+            }
+
+            foreach (Good good in goods)
             {
                 GoodPanel item = new GoodPanel(good, IsAdmin);
                 item.Edited += LoadItems;
@@ -101,6 +138,21 @@ namespace Educat
                 AddButton.Visibility = Visibility.Collapsed;
                 FullNameLabel.Visibility = Visibility.Collapsed;
             }
+        }
+
+        private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            RefreshItems();
+        }
+
+        private void SortBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            RefreshItems();
+        }
+
+        private void FilterBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            RefreshItems();
         }
     }
 }

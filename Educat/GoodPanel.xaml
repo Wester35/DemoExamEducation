@@ -13,10 +13,10 @@
                 <ColumnDefinition Width="12*"/>
             </Grid.ColumnDefinitions>
 
-            <Border BorderBrush="Black" Margin="10,10,0,10" Width="300" Height="200" BorderThickness="2" Grid.Column="0">
+            <Border BorderBrush="Black" Margin="10,10,0,10" Width="300" Height="200" BorderThickness="3" Grid.Column="0">
                 <Image x:Name="PhotoBox" Source="/Resouces/picture.png"/>
             </Border>
-            <Border BorderBrush="Black" Margin="5,10,0,10" Height="200" BorderThickness="3" Grid.Column="1">
+            <Border BorderBrush="Black" Margin="5,10,0,10" Height="200" BorderThickness="2" Grid.Column="1">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
@@ -38,7 +38,7 @@
                     <TextBlock x:Name="NewPrice" Grid.Row="4" HorizontalAlignment="Left" VerticalAlignment="Center" Width="40" Margin="95,0,0,0"/>
                 </Grid>
             </Border>
-            <Border x:Name="DiscountBorder" BorderBrush="Black" Margin="5,10,10,10" Height="200" BorderThickness="2" Grid.Column="2">
+            <Border x:Name="DiscountBorder" BorderBrush="Black" Margin="5,10,10,10" Height="200" BorderThickness="3" Grid.Column="2">
                 <Label x:Name="Discount" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30px"/>
             </Border>
         </Grid>
